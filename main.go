@@ -81,6 +81,10 @@ func main() {
 
 	// Find someone on the "pals" team
 
+	// Find out who is in location l1
+
+	// Print out who is in which room
+
 	drop := sqlair.MustPrepare("DROP TABLE person; DROP TABLE location;")
 	err = db.Query(nil, drop).Run()
 	if err != nil {
