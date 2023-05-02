@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/canonical/sqlair"
 
@@ -90,4 +91,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Finished!")
 }
