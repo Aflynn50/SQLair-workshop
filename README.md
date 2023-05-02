@@ -1,5 +1,10 @@
 # SQLair Workshop
 
+```
+go run main.go
+
+```
+
 Go package documentation can be found at [pkg.go.dev](https://pkg.go.dev/github.com/canonical/sqlair).
 
 A SQLair tutorial and demo can be found at [Aflynn50/sqlair](https://github.com/aflynn50/sqlair/tree/update-readme).

@@ -45,14 +45,18 @@ func main() {
 
 	insertPerson := sqlair.MustPrepare("INSERT INTO person (name, id, team) VALUES ($Person.name, $Person.id, $Person.team);", Person{})
 
-	var al = Person{"Alasatir", 1, "pals"}
-	var ed = Person{"Ed", 2, "pals"}
-	var gus = Person{"Gustavo", 3, "leadership"}
-	var joe = Person{"Joe", 4, "juju"}
-	var cole = Person{"Cole", 5, "pals"}
-	var ben = Person{"Ben", 6, "charms"}
-	var fred = Person{"Fred", 6, "kernos"}
-	var people = []Person{al, ed, gus, joe, cole, ben, fred}
+	var ed = Person{"Ed", 1, "pals"}
+	var al = Person{"Alasatir", 2, "pals"}
+	var cole = Person{"Cole", 3, "pals"}
+	var marco = Person{"Marco", 4, "pals"}
+	var pedro = Person{"Pedro", 5, "pals"}
+	var mathieu = Person{"Mathieu", 6, "pals"}
+	var gus = Person{"Gustavo", 7, "leadership"}
+	var joe = Person{"Joe", 8, "juju"}
+	var ben = Person{"Ben", 9, "charms"}
+	var serdar = Person{"Serdar", 10, "charms"}
+	var fred = Person{"Fred", 11, "kernos"}
+	var people = []Person{ed, al, cole, marco, pedro, mathieu, gus, joe, ben, serdar, fred}
 	for _, p := range people {
 		err := db.Query(nil, insertPerson, p).Run()
 		if err != nil {
@@ -75,7 +79,7 @@ func main() {
 		}
 	}
 
-	// Find out who is in room 19
+	// Find someone on the "pals" team
 
 	drop := sqlair.MustPrepare("DROP TABLE person; DROP TABLE location;")
 	err = db.Query(nil, drop).Run()
