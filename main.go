@@ -11,11 +11,12 @@ import (
 type Location struct {
 	ID   int    `db:"room_id"`
 	Name string `db:"name"`
+	Team string `db:"team"`
 }
 
 type Person struct {
 	Name string `db:"name"`
-	ID   int    `db:"room_id"`
+	ID   int    `db:"id"`
 	Team string `db:"team"`
 }
 
@@ -29,36 +30,44 @@ func main() {
 	create := sqlair.MustPrepare(`
 	CREATE TABLE person (
 		name text,
-		room_id integer,
+		id integer,
 		team text
 	);
 	CREATE TABLE location (
 		room_id integer,
-		name text
+		name text,
+		team text
 	)`)
 	err = db.Query(nil, create).Run()
 	if err != nil {
 		panic(err)
 	}
 
-	insertPerson := sqlair.MustPrepare("INSERT INTO person (name, room_id, team) VALUES ($Person.name, $Person.room_id, $Person.team);", Person{})
-	insertLocation := sqlair.MustPrepare("INSERT INTO location (name, room_id) VALUES ($Location.name, $Location.room_id)", Location{})
+	insertPerson := sqlair.MustPrepare("INSERT INTO person (name, id, team) VALUES ($Person.name, $Person.id, $Person.team);", Person{})
 
-	var al = Person{"Alasatir", 2, "pals"}
+	var al = Person{"Alasatir", 1, "pals"}
 	var ed = Person{"Ed", 2, "pals"}
-	var gus = Person{"Gustavo", 1, "leadership"}
-	var joe = Person{"Joe", 3, "juju"}
-	var people = []Person{al, ed, gus, joe}
+	var gus = Person{"Gustavo", 3, "leadership"}
+	var joe = Person{"Joe", 4, "juju"}
+	var cole = Person{"Cole", 5, "pals"}
+	var ben = Person{"Ben", 6, "charms"}
+	var fred = Person{"Fred", 6, "kernos"}
+	var people = []Person{al, ed, gus, joe, cole, ben, fred}
 	for _, p := range people {
 		err := db.Query(nil, insertPerson, p).Run()
 		if err != nil {
 			panic(err)
 		}
 	}
-	l1 := Location{1, "Palmovka"}
-	l2 := Location{2, "Berlin"}
-	l3 := Location{3, "London"}
-	var locations = []Location{l1, l2, l3}
+
+	insertLocation := sqlair.MustPrepare("INSERT INTO location (name, room_id, team) VALUES ($Location.name, $Location.room_id, $Location.team)", Location{})
+
+	l1 := Location{1, "Congress Hall 1", "charms"}
+	l2 := Location{100, "Marks Jacuzzi", "leadership"}
+	l3 := Location{19, "Berlin 2", "juju"}
+	l4 := Location{34, "Converted room #1065", "pals"}
+	l5 := Location{8, "Converted room #1070", "kernos"}
+	var locations = []Location{l1, l2, l3, l4, l5}
 	for _, l := range locations {
 		err := db.Query(nil, insertLocation, l).Run()
 		if err != nil {
@@ -66,10 +75,11 @@ func main() {
 		}
 	}
 
+	// Find out who is in room 19
+
 	drop := sqlair.MustPrepare("DROP TABLE person; DROP TABLE location;")
 	err = db.Query(nil, drop).Run()
 	if err != nil {
 		panic(err)
 	}
-
 }
